@@ -86,10 +86,22 @@ pio run --target upload
 > esptool.py --port /dev/ttyACM0 erase_flash
 > ```
 
-### Serial Monitor
+```
+Button wiring (active-high):
 
-```bash
-pio device monitor
+GPIO ── [BTN] ── 3V3 (diagonally opposite pin)
+          |
+          └─── [10kΩ] ── GND (same side as GPIO)
+
+For each button:
+- Connect one pin to GPIO input
+- Connect the diagonally opposite pin to 3V3
+- Place a 10kΩ pull-down resistor between the GPIO pin and ground (on the same side as GPIO)
+- The other two pins (on the same side as the first two) can be left unconnected or used for mechanical stability
+
+LED wiring:
+GPIO 7  ── [220Ω] ── LED (Red)    ── GND
+GPIO 38 ── [220Ω] ── LED (Orange) ── GND
 ```
 
 The ESP32-S3 appears as `/dev/ttyACM0` or `/dev/ttyACM1`. The port number may change after a deep sleep reboot. Set `monitor_port` in `platformio.ini` if needed.

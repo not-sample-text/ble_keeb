@@ -27,17 +27,22 @@ The following were added during development for debugging and ease of use — no
 
 ### Pin Mapping
 
-| Component     | Board Pin | GPIO    | Details                                       |
-| ------------- | --------- | ------- | --------------------------------------------- |
-| Red LED       | D5        | GPIO 7  | Boot / wake indicator, 220 Ω series resistor  |
-| Orange LED    | D3        | GPIO 38 | BLE connection status, 220 Ω series resistor  |
-| Yellow LED    | D2        | GPIO 3  | Keystroke confirmation, 220 Ω series resistor |
-| Action Button | D6        | GPIO 18 | Button to 3V3 through 10 kΩ resistor          |
-| Config Button | D7        | GPIO 9  | Button to 3V3 through 10 kΩ resistor          |
+| Component     | Board Pin | GPIO    | Details                                                                                                               |
+| ------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| Red LED       | D5        | GPIO 7  | Boot / wake indicator, 220 Ω series resistor                                                                          |
+| Orange LED    | D3        | GPIO 38 | BLE connection status, 220 Ω series resistor                                                                          |
+| Yellow LED    | D2        | GPIO 3  | Keystroke confirmation, 220 Ω series resistor                                                                         |
+| Action Button | D6        | GPIO 18 | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
+| Config Button | D7        | GPIO 9  | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
 
 ### Wiring Notes
 
 - **LEDs** connect from GPIO → 220 Ω resistor → GND. Driven HIGH = ON.
+- **Buttons (active-high):**
+  - GPIO to one pin
+  - Diagonally opposite pin to 3V3
+  - 10kΩ pull-down resistor from GPIO to GND (same side as GPIO)
+  - Other two pins (same side as first two) can be left unconnected or used for mechanical stability
 - **Buttons** have one pin wired to the GPIO and the diagonal pin wired to 3V3 through a 10 kΩ resistor. Pressing the button connects the GPIO to 3V3, reading **HIGH**.
 
 ## Software
