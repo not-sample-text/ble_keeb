@@ -97,11 +97,13 @@ bleKeyboard.releaseAll();
 
 ### Power Management — Three Tiers
 
-| State                           | Trigger                                | Power    | BLE           | Wake                        |
-| ------------------------------- | -------------------------------------- | -------- | ------------- | --------------------------- |
-| **Full speed** (240MHz)         | Active use                             | ~100mA   | Connected     | —                           |
-| **Auto light sleep** (80/10MHz) | 10s no key press                       | ~5-15mA  | **Connected** | Instant (no reconnect)      |
-| **Deep sleep**                  | 30s no key press OR 2 min disconnected | ~10-20µA | Off           | Action button → full reboot |
+| State                   | Trigger                                | Power    | BLE           | Wake                        |
+| ----------------------- | -------------------------------------- | -------- | ------------- | --------------------------- |
+| **Full speed** (80 MHz) | Active use                             | ~40–60mA | Connected     | —                           |
+| **Auto light sleep**    | 10s no key press                       | ~5–15mA  | **Connected** | Instant (no reconnect)      |
+| **Deep sleep**          | 30s no key press OR 2 min disconnected | ~10–20µA | Off           | Action button → full reboot |
+
+_CPU frequencies have been reduced for better efficiency. Power management is now more aggressive and effective._
 
 ### LED Dashboard
 
@@ -114,12 +116,18 @@ bleKeyboard.releaseAll();
 
 ### Button Functions
 
-| Button                   | Action                            |
-| ------------------------ | --------------------------------- |
-| Action (D6)              | Send Space / Wake from deep sleep |
-| Config (D7) press        | (reserved)                        |
-| Config (D7) hold 3s      | Clear all BLE bonds & restart     |
-| Config (D7) hold at boot | Clear bonds (legacy)              |
+The single button (GPIO 18) now handles all actions:
+
+| Gesture         | Action                            |
+| --------------- | --------------------------------- |
+| Short press     | Send Space keystroke (HID)        |
+| Long press (3s) | Clear Bluetooth bonds and restart |
+| Hold at boot    | Enter pairing/bond-clear mode     |
+| Press in sleep  | Wake from deep sleep              |
+
+# Debug Logging
+
+All debug output is now timestamped and tagged by subsystem, with log levels for filtering. See `main.cpp` for the `DBG()` macro and usage examples. This makes troubleshooting and power state transitions much easier to follow.
 
 ## Key Learnings
 

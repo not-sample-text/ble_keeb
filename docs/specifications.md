@@ -15,9 +15,9 @@ Build a BLE HID keyboard on the **DFRobot FireBeetle 2 ESP32-S3**.
 The following were added during development for debugging and ease of use — not part of the original spec:
 
 - **3 LEDs** (red, orange, yellow) as a status dashboard (boot, BLE status, keystroke confirmation)
-- **Config button** for clearing Bluetooth bonds and re-pairing
-- **Three-tier power management** (full speed → auto light sleep → deep sleep) instead of simple deep sleep
-- **Serial debug logging** via USB CDC
+- **Single button** for all actions: keystroke, bond clear, pairing, and wake (Config button removed)
+- **Improved three-tier power management** (lower CPU frequencies, more aggressive sleep)
+- **Consistent, timestamped debug logging** via USB CDC, with log levels and macros
 
 ## Hardware
 
@@ -27,13 +27,12 @@ The following were added during development for debugging and ease of use — no
 
 ### Pin Mapping
 
-| Component     | Board Pin | GPIO    | Details                                                                                                               |
-| ------------- | --------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| Red LED       | D5        | GPIO 7  | Boot / wake indicator, 220 Ω series resistor                                                                          |
-| Orange LED    | D3        | GPIO 38 | BLE connection status, 220 Ω series resistor                                                                          |
-| Yellow LED    | D2        | GPIO 3  | Keystroke confirmation, 220 Ω series resistor                                                                         |
-| Action Button | D6        | GPIO 18 | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
-| Config Button | D7        | GPIO 9  | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
+| Component     | Board Pin | GPIO    | Details                                                     |
+| ------------- | --------- | ------- | ----------------------------------------------------------- |
+| Red LED       | D5        | GPIO 7  | Boot / wake indicator, 220 Ω series resistor                |
+| Orange LED    | D3        | GPIO 38 | BLE connection status, 220 Ω series resistor                |
+| Yellow LED    | D2        | GPIO 3  | Keystroke confirmation, 220 Ω series resistor               |
+| Action Button | D6        | GPIO 18 | Single button: Space, bond clear, pairing, wake (see below) |
 
 ### Layout
 
@@ -44,15 +43,39 @@ The following were added during development for debugging and ease of use — no
 ### Wiring Notes
 
 - **LEDs** connect from GPIO → 220 Ω resistor → GND. Driven HIGH = ON.
-- **Buttons (active-high):**
+- **Single button (active-high):**
   - GPIO to one pin
   - Diagonally opposite pin to 3V3
   - 10kΩ pull-down resistor from GPIO to GND (same side as GPIO)
   - Other two pins (same side as first two) can be left unconnected or used for mechanical stability
-- **Buttons** have one pin wired to the GPIO and the diagonal pin wired to 3V3 through a 10 kΩ resistor. Pressing the button connects the GPIO to 3V3, reading **HIGH**.
+- Pressing the button connects the GPIO to 3V3, reading **HIGH**. (Config button removed.)
 
 ## Software
 
 - **PlatformIO** with Arduino framework on `espressif32`
 - **NimBLE-Arduino** for the BLE stack
 - **ESP32 BLE Keyboard** for the HID keyboard profile
+- **Debug logging:** All debug output is timestamped and tagged by subsystem, with log levels for filtering. See `main.cpp` for the `DBG()` macro and usage examples.
+
+# Power Management
+
+Three-tier power management is now more efficient:
+
+| State               | Trigger                        | Estimated Current | BLE       | Wake          |
+| ------------------- | ------------------------------ | ----------------- | --------- | ------------- |
+| Full speed (80 MHz) | Active use                     | ~40–60 mA         | Connected | —             |
+| Auto light sleep    | 10 s idle                      | ~5–15 mA          | Connected | Instant       |
+| Deep sleep          | 30 s idle / 2 min disconnected | ~10–20 µA         | Off       | Action button |
+
+_CPU frequencies have been reduced for better efficiency. Power management is now more aggressive and effective._
+
+# Button Functions
+
+The single button (GPIO 18) now handles all actions:
+
+| Gesture         | Action                            |
+| --------------- | --------------------------------- |
+| Short press     | Send Space keystroke (HID)        |
+| Long press (3s) | Clear Bluetooth bonds and restart |
+| Hold at boot    | Enter pairing/bond-clear mode     |
+| Press in sleep  | Wake from deep sleep              |
