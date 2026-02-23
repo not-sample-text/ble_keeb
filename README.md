@@ -30,6 +30,12 @@ Added during development for debugging and usability — not part of the origina
 | Action Button | D6        | GPIO 18 | Sends Space / wakes from deep sleep |
 | Config Button | D7        | GPIO 9  | Bond clear (hold 3 s) / pairing     |
 
+### Wiring & Layout
+
+![Keyboard layout and wiring diagram](docs/layout.jpg)
+
+<div align="center"><em>Physical layout and wiring diagram</em></div>
+
 ### Wiring
 
 ```

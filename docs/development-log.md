@@ -1,5 +1,9 @@
 # S3-Pony-Keeb — Development Log
 
+![Keyboard layout and wiring diagram](layout.jpg)
+
+<div align="center"><em>Physical layout and wiring diagram</em></div>
+
 ## Original Requirements
 
 1. **Bluetooth pairing** — pair the ESP32-S3 with a phone over BLE

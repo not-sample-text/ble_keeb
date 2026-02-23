@@ -35,6 +35,12 @@ The following were added during development for debugging and ease of use — no
 | Action Button | D6        | GPIO 18 | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
 | Config Button | D7        | GPIO 9  | Button: GPIO to one pin, diagonally opposite pin to 3V3, 10kΩ pull-down resistor from GPIO to GND (same side as GPIO) |
 
+### Layout
+
+![Keyboard layout and wiring diagram](layout.jpg)
+
+<div align="center"><em>Physical layout and wiring diagram</em></div>
+
 ### Wiring Notes
 
 - **LEDs** connect from GPIO → 220 Ω resistor → GND. Driven HIGH = ON.

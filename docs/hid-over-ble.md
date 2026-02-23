@@ -1,5 +1,9 @@
 # HID over BLE — How & Why
 
+![Keyboard layout and wiring diagram](layout.jpg)
+
+<div align="center"><em>Physical layout and wiring diagram</em></div>
+
 This document explains what HID is, how it works over Bluetooth Low Energy, what libraries we used, and the implementation details.
 
 ## What Is HID?

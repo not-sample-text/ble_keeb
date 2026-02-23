@@ -1,5 +1,9 @@
 # Sleep Modes — How & Why
 
+![Keyboard layout and wiring diagram](layout.jpg)
+
+<div align="center"><em>Physical layout and wiring diagram</em></div>
+
 This document covers the ESP32-S3 sleep modes, which ones we tried, what worked, what didn't, and why we ended up with a three-tier system.
 
 ## ESP32-S3 Sleep Modes Overview
